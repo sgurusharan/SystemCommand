@@ -6,6 +6,9 @@ import java.util.concurrent.Executors;
 
 /**
  * Created by sgurusharan on 12/10/16.
+ *
+ * A thread based wrapper for Java's Process API.
+ *
  */
 public class SystemCommandThread extends Thread {
     private String command;
@@ -13,6 +16,11 @@ public class SystemCommandThread extends Thread {
 
     private static final String BASH_PROFILE = System.getenv("HOME") + "/.bash_profile";
 
+    /**
+     * Initialize the execution thread with the given Bash/Windows command.
+     *
+     * @param command - Command to execute
+     */
     public SystemCommandThread(String command) {
         this.command = command;
     }
