@@ -12,7 +12,7 @@ public class SystemCommandTest {
     @Test
     public void testUnixEnvCommand() {
 
-        if (System.getProperty("os.name").equals("Windows")) {
+        if (System.getProperty("os.name").contains("Windows")) {
             return;
         }
 
@@ -21,20 +21,20 @@ public class SystemCommandTest {
         CommandOutput output = SystemCommand.execute(unixCommand);
         Assert.assertEquals(output.getExitCode(), 0);
         Assert.assertTrue(output.getOut().equals(System.getenv("HOME") + "\n"));
-        Assert.assertTrue(output.getOut().equals(System.getenv("HOME") + "\n"));
+        Assert.assertTrue(output.getErr().equals(""));
     }
 
     @Test
     public void testWindowsEnvCommand() {
-        if (!System.getProperty("os.name").equals("Windows")) {
+        if (!System.getProperty("os.name").contains("Windows")) {
             return;
         }
 
-        String unixCommand = "echo %HOME%";
+        String windowsCommand = "echo %HOMEPATH%";
 
-        CommandOutput output = SystemCommand.execute(unixCommand);
+        CommandOutput output = SystemCommand.execute(windowsCommand);
         Assert.assertEquals(output.getExitCode(), 0);
-        Assert.assertTrue(output.getOut().equals(System.getenv("HOME") + "\n"));
-        Assert.assertTrue(output.getOut().equals(System.getenv("HOME") + "\n"));
+        Assert.assertTrue(output.getOut().equals(System.getenv("HOMEPATH") + "\n"));
+        Assert.assertTrue(output.getErr().equals(""));
     }
 }

@@ -15,6 +15,7 @@ public class SystemCommandThread extends Thread {
     private CommandOutput output = null;
 
     private static final String BASH_PROFILE = System.getenv("HOME") + "/.bash_profile";
+    private static final String WIN_ECHO_OFF = "@echo off";
 
     /**
      * Initialize the execution thread with the given Bash/Windows command.
@@ -34,15 +35,18 @@ public class SystemCommandThread extends Thread {
         try {
 
             String cmdPrefix = "sh ";
+            String fileSuffix = ".sh";
             if (new File(BASH_PROFILE).exists()) {
                 command = String.format("source %s\n%s", BASH_PROFILE, command);
             }
 
-            if (System.getProperty("os.name").equals("Windows")) {
+            if (System.getProperty("os.name").contains("Windows")) {
                 cmdPrefix = "cmd /c ";
+                command = String.format("%s\n%s", WIN_ECHO_OFF, command);
+                fileSuffix = ".bat";
             }
 
-            File tempShFile = File.createTempFile("syscmd", ".sh");
+            File tempShFile = File.createTempFile("syscmd", fileSuffix);
             FileWriter fileWriter = new FileWriter(tempShFile);
             fileWriter.write(command);
             fileWriter.close();
